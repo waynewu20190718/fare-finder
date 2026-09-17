@@ -74,3 +74,8 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+This is a plain Vite + React single-page app (client-side routing via React
+Router, Supabase auth from the browser). `npm run build` produces a static
+`dist/` folder suitable for any static host; `vercel.json` adds the SPA
+rewrite so deep links (e.g. `/dashboard`) resolve correctly on Vercel.

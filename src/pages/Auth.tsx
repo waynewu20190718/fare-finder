@@ -1,20 +1,10 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Sign in · Flight Price Notifier" },
-      { name: "description", content: "Sign in to manage your flight fare alerts." },
-      { property: "og:title", content: "Sign in · Flight Price Notifier" },
-      { property: "og:description", content: "Sign in to manage your flight fare alerts." },
-    ],
-  }),
-  component: AuthPage,
-});
-
-function AuthPage() {
+export default function AuthPage() {
+  useDocumentTitle("Sign in · Flight Price Notifier");
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
@@ -25,7 +15,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) navigate("/dashboard", { replace: true });
     });
   }, [navigate]);
 
@@ -38,7 +28,7 @@ function AuthPage() {
     if (mode === "signin") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError(error.message);
-      else navigate({ to: "/dashboard", replace: true });
+      else navigate("/dashboard", { replace: true });
     } else {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -46,7 +36,7 @@ function AuthPage() {
         options: { emailRedirectTo: window.location.origin },
       });
       if (error) setError(error.message);
-      else if (data.session) navigate({ to: "/dashboard", replace: true });
+      else if (data.session) navigate("/dashboard", { replace: true });
       else setMessage("Check your email to confirm your account．請至信箱確認註冊。");
     }
     setLoading(false);
