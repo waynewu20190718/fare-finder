@@ -9,7 +9,6 @@ export function RouteError() {
   console.error(error);
   useEffect(() => {
     reportLovableError(error, { boundary: "react_router_error_element" });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (

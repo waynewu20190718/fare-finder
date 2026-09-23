@@ -33,7 +33,7 @@ export function RequireAuth() {
   }
 
   if (state.status === "anon") {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/sign-in" replace />;
   }
 
   return <Outlet context={{ user: state.user }} />;

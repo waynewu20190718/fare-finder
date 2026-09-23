@@ -29,14 +29,16 @@ Card 3: 🚫 icon — "隨時取消" / "Cancel anytime" —
 
 A simple footer with "© 2026 Flight Price Notifier".
 
-An authenticated area with a /auth page (Supabase email/password auth):
+An authenticated area with /sign-in and /sign-up pages (Supabase email/password
+auth; the legacy /auth path redirects to /sign-in):
 
 Heading "Welcome back．登入", subtitle "Sign in to manage your fare alerts.",
 Email field (placeholder "you@example.com") and Password field, a primary
-button "Sign in / 登入", and a toggle link "No account yet? Create one" to
-switch to sign-up mode.
+button "Sign in / 登入", and a link "No account yet? Create one" to /sign-up
+(and back again to /sign-in).
 
-After signing in, redirect to a placeholder dashboard page.
+After signing in, redirect to the protected dashboard at /app (the legacy
+/dashboard path redirects there).
 
 Style requirements:
 
@@ -78,4 +80,4 @@ npm run dev
 This is a plain Vite + React single-page app (client-side routing via React
 Router, Supabase auth from the browser). `npm run build` produces a static
 `dist/` folder suitable for any static host; `vercel.json` adds the SPA
-rewrite so deep links (e.g. `/dashboard`) resolve correctly on Vercel.
+rewrite so deep links (e.g. `/app`, `/sign-in`) resolve correctly on Vercel.
