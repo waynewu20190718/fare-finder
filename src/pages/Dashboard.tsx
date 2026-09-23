@@ -14,7 +14,7 @@ export default function Dashboard() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate("/auth", { replace: true });
+    navigate("/sign-in", { replace: true });
   }
 
   return (

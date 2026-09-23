@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
     setPassword("");
     setConfirm("");
     await supabase.auth.signOut();
-    setTimeout(() => navigate("/auth", { replace: true }), 1800);
+    setTimeout(() => navigate("/sign-in", { replace: true }), 1800);
   }
 
   async function handleResend(e: React.FormEvent) {
@@ -146,7 +146,7 @@ export default function ResetPasswordPage() {
               </form>
 
               <Link
-                to="/auth"
+                to="/sign-in"
                 className="mt-5 block text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
               >
                 Back to sign in / 回到登入頁
@@ -213,7 +213,7 @@ export default function ResetPasswordPage() {
                 <div className="mt-7 space-y-4">
                   <p className="text-sm text-primary">{message}</p>
                   <Link
-                    to="/auth"
+                    to="/sign-in"
                     className="block w-full rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                   >
                     Go to sign in / 前往登入

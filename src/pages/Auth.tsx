@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 
-export default function AuthPage() {
-  useDocumentTitle("Sign in · Flight Price Notifier");
+export type AuthMode = "signin" | "signup";
+
+// Shared page for /sign-in and /sign-up. The URL decides the mode, so each
+// form is deep-linkable and switching between them is a normal navigation.
+export default function AuthPage({ mode }: { mode: AuthMode }) {
+  useDocumentTitle(
+    mode === "signin" ? "Sign in · Flight Price Notifier" : "Sign up · Flight Price Notifier",
+  );
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,7 +20,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/dashboard", { replace: true });
+      if (data.session) navigate("/app", { replace: true });
     });
   }, [navigate]);
 
@@ -28,15 +33,15 @@ export default function AuthPage() {
     if (mode === "signin") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError(error.message);
-      else navigate("/dashboard", { replace: true });
+      else navigate("/app", { replace: true });
     } else {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: window.location.origin },
+        options: { emailRedirectTo: `${window.location.origin}/app` },
       });
       if (error) setError(error.message);
-      else if (data.session) navigate("/dashboard", { replace: true });
+      else if (data.session) navigate("/app", { replace: true });
       else setMessage("Check your email to confirm your account．請至信箱確認註冊。");
     }
     setLoading(false);
@@ -52,8 +57,14 @@ export default function AuthPage() {
 
       <main className="flex flex-1 items-center justify-center px-5 py-10">
         <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-2xl">
-          <h1 className="text-2xl font-bold text-foreground">Welcome back．登入</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Sign in to manage your fare alerts.</p>
+          <h1 className="text-2xl font-bold text-foreground">
+            {mode === "signin" ? "Welcome back．登入" : "Create account．註冊"}
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {mode === "signin"
+              ? "Sign in to manage your fare alerts."
+              : "Sign up to start tracking fares."}
+          </p>
 
           <form onSubmit={handleSubmit} className="mt-7 space-y-4">
             <div>
@@ -100,17 +111,13 @@ export default function AuthPage() {
             </button>
           </form>
 
-          <button
-            type="button"
-            onClick={() => {
-              setMode(mode === "signin" ? "signup" : "signin");
-              setError(null);
-              setMessage(null);
-            }}
-            className="mt-5 w-full text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+          <Link
+            to={mode === "signin" ? "/sign-up" : "/sign-in"}
+            replace
+            className="mt-5 block w-full text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
           >
             {mode === "signin" ? "No account yet? Create one" : "Already have an account? Sign in"}
-          </button>
+          </Link>
         </div>
       </main>
     </div>

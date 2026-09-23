@@ -48,7 +48,7 @@ export default function Landing() {
           Flight Price Notifier
         </span>
         <Link
-          to="/auth"
+          to="/sign-in"
           className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
           Sign in / 登入
@@ -75,7 +75,7 @@ export default function Landing() {
               Set a route and a target price — we email you when the fare drops.
             </p>
             <Link
-              to="/auth"
+              to="/sign-in"
               className="mt-9 inline-flex rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
             >
               Sign in / 登入
